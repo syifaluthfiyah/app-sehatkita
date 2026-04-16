@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Upload File</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #e8f5e9, #ffffff);
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #2e7d32, #66bb6a);
+        }
+
+        .card {
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        .btn-success {
+            background-color: #66bb6a;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background-color: #388e3c;
+        }
+
+        .btn-primary {
+            background-color: #2e7d32;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #1b5e20;
+        }
+
+        .btn-secondary {
+            border-radius: 10px;
+        }
+
+        table thead {
+            background-color: #66bb6a;
+            color: white;
+        }
+
+        .container {
+            max-width: 1000px;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark shadow">
+    <div class="container">
+        <span class="navbar-brand fw-bold">SehatKita</span>
+    </div>
+</nav>
+
+<div class="container mt-5">
+
+    <h2 class="text-center mb-4">Upload Laporan</h2>
+
+    <!-- =========================
+         NOTIFIKASI
+    ========================== -->
+    {% if pesan %}
+    <div class="alert alert-success text-center">
+        {{ pesan }}
+    </div>
+    {% endif %}
+
+    {% if nama_file %}
+    <div class="alert alert-info text-center">
+        File berhasil diupload: <b>{{ nama_file }}</b>
+    </div>
+    {% endif %}
+
+    <!-- =========================
+         FORM UPLOAD
+    ========================== -->
+    <div class="card shadow p-4 mx-auto mb-4" style="max-width:500px;">
+
+        <form method="POST" enctype="multipart/form-data">
+
+            <div class="mb-3">
+                <label class="form-label">Pilih File</label>
+                <input type="file" name="file" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">
+                Upload File
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- =========================
+         TOMBOL KEMBALI
+    ========================== -->
+    <div class="text-center mt-3">
+        <a href="/" class="btn btn-secondary px-4">Kembali</a>
+    </div>
+
+    <!-- =========================
+         RIWAYAT UPLOAD (DATABASE)
+    ========================== -->
+    <div class="card shadow p-4 mx-auto mt-4" style="max-width:700px;">
+
+        <h4 class="text-center mb-3">Riwayat Upload</h4>
+
+        {% if riwayat %}
+        <table class="table table-bordered table-striped text-center">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nama File</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for file in riwayat %}
+                <tr>
+                    <td>{{ file.id }}</td>
+                    <td>{{ file.nama_file }}</td>
+                    <td>
+                        {% if file.file_url %}
+                        <a href="{{ file.file_url }}" target="_blank" class="btn btn-sm btn-primary">Lihat</a>
+                        {% else %}
+                        <span class="text-muted">URL tidak tersedia</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% else %}
+        <p class="text-center text-muted">Belum ada file yang diupload</p>
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
